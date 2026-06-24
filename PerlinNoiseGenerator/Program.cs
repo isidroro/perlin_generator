@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace PerlinNoiseGenerator
 {
-	class Program
+	internal static class Program
 	{
-		static void Main()
+		private static void Main()
 		{
 			Application.Run(new NoiseForm());
 		}

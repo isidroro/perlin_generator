@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -33,7 +32,7 @@ namespace PerlinNoiseGenerator
        * Esto significa que la libreria que uso, en lugar de hacer una sola llamada para genrar ruido, va a hacer
        * varias. Este numero se define en SetFractalOcataves. Dichas octavas son, por asi decirlo, las capas del
        * ruido. SetFranctalLacunarity define cuanto aumenta la frecuencia en cada octava (a mayor frecuencia, mas
-       * pequeñas y densas son las implementaciones. La frecuencia define cuanta distancia hay entre cada onda.
+       * pequenas y densas son las implementaciones. La frecuencia define cuanta distancia hay entre cada onda.
        * Por otro lado, FractalGain regula la amplitud de cada octava consecutiva. Es decir, las octavas de alta
        * frecuencia (micro-detalles) deben influir menos que las de baja frecuencia (estructura general).
        * 
@@ -51,7 +50,7 @@ namespace PerlinNoiseGenerator
       _noise.SetFractalLacunarity(2.0f);
       _noise.SetFractalGain(0.5f);
 
-      // Boirlerplate de la ventana.
+      // Boilerplate la ventana.
       _box = new PictureBox { Dock = DockStyle.Fill };
       Controls.Add(_box);
       ClientSize = new Size(_canvasWidth, _canvasHeight);
@@ -63,13 +62,19 @@ namespace PerlinNoiseGenerator
       KeyDown += (s, e) => GenerateBitmap();
     }
 
+    public sealed override string Text
+    {
+      get => base.Text;
+      set => base.Text = value;
+    }
+
     private void GenerateBitmap()
     {
       // Semilla para el ruido.
       _noise.SetSeed(_random.Next());
 
       // Dimensiones.
-      int width = 512, height = 512;
+      const int width = 512, height = 512;
       var bitmap = new Bitmap(width, height);
       List<double> vals = new List<double>();
 
@@ -97,7 +102,7 @@ namespace PerlinNoiseGenerator
       string baseDir = AppContext.BaseDirectory;
       string fullPath = Path.Combine(baseDir, "Exports" , fileName);
       
-      this.ExportToCSV(vals, 512, 512, fullPath);
+      this.ExportToCsv(vals, 512, 512, fullPath);
 
       // Guardo el bitmap como un png.
       // Le asignamos el bitmap nuevo a la ventana.
@@ -107,15 +112,17 @@ namespace PerlinNoiseGenerator
     }
 
     // Prototipo cueva:
-    private Color GetCaveColor(double value)
+    private static Color GetCaveColor(double value)
     {
       if (value < 0.4) return Color.White;
       if (value < 0.8) return Color.Black;
+      // default
       return Color.White;
     }
 
     // Para mapas complejos.
-    private Color GetTerraincolor(double value)
+    // No utilizado al momento
+    private static Color GetTerraincolor(double value)
     {
       if (value < 0.3) return Color.Blue;
       if (value < 0.4) return Color.SandyBrown;
@@ -124,7 +131,7 @@ namespace PerlinNoiseGenerator
       return Color.White;
     }
 
-    private void ExportToCSV(List<double> values, int width, int height, string fullPath)
+    private void ExportToCsv(List<double> values, int width, int height, string fullPath)
     {
       double[] vals = values.ToArray();
       var rows = new List<string>();
